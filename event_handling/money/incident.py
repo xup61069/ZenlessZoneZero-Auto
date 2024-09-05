@@ -25,6 +25,9 @@ from schema.cfg.zero_info import state_zero
 @task.page(name="选择委托", target_texts=["^战斗委托$"])
 def action(positions: Dict[str, Position]):
     pos = positions.get("^战斗委托$")
+    time.sleep(0.3)
+    control.click(pos.x, pos.y)
+    time.sleep(0.1)
     control.click(pos.x, pos.y)
     time.sleep(0.1)
     control.click(pos.x, pos.y)
@@ -38,18 +41,6 @@ def action(positions: Dict[str, Position]):
     time.sleep(0.5)
     pos = positions.get("^下一步$")
     control.click(pos.x, pos.y)
-
-
-@task.page(name="选择关卡_滚动", priority=6, target_texts=["零号空洞的挑战"])
-def action():
-    time.sleep(0.3)
-    control.move_at(1000, 500, 1000, 200)
-
-
-@task.page(name="选择关卡_滚动", priority=2, target_texts=["关键敌情", "委托详情"])
-def action():
-    time.sleep(0.3)
-    control.move_at(1000, 500, 1000, 200)
 
 
 @task.page(name="出战", target_texts=["^出战$"])
@@ -67,7 +58,7 @@ def action(positions: Dict[str, Position]):
 
 
 def money_fight():
-    moveRel(250, 0, relative=True)
+    moveRel(170, 0, relative=True)
     time.sleep(0.3)
     keyDown("w")
     keyDown("shift")
@@ -80,9 +71,9 @@ def money_fight():
 
 
 def money_go(t1: float, t2: float, t3: int):
-    time.sleep(t1)
-    moveRel(-250, 0, relative=True)
-    time.sleep(t2)
+    time.sleep(2.8)
+    moveRel(180, 0, relative=True)
+    time.sleep(0.5)
     for i in range(t3):
         time.sleep(0.1)
         press("f", duration=0.1)
@@ -91,9 +82,10 @@ def money_go(t1: float, t2: float, t3: int):
 
 
 # 战斗
+    time.sleep(0.3)
 @task.page(name="战斗中", target_texts=["^Space$"])
 def action():
-    time.sleep(0.3)
+
     # 击碎箱子
     money_fight()
     # 交付任务
@@ -115,20 +107,21 @@ def action(positions: Dict[str, Position]):
 @task.page(name="通关", priority=2, target_texts=["^完成$"])
 def action(positions: Dict[str, Position]):
     pos = positions.get("^完成$")
+    time.sleep(0.4)
     control.click(pos.x, pos.y)
     stage.moneyFightFlag = False  # 通关后退出战斗标志
     time.sleep(0.1)
 
 
 # 重新开始
-@task.page(name="重新开始", target_texts=["^重新开始$"])
+@task.page(name="重新开始", target_texts=["^退出战斗$"])
 def action(positions: Dict[str, Position]):
-    pos = positions.get("^重新开始$")
+    pos = positions.get("^退出战斗$")
     control.click(pos.x, pos.y)
 
 
 # 重新开始
-@task.page(name="重新开始_确认", target_texts=["是否重新开始战斗", "^确认$"])
+@task.page(name="重新开始_确认", target_texts=["是否确认退出战斗", "^确认$"])
 def action(positions: Dict[str, Position]):
     pos = positions.get("^确认$")
     control.click(pos.x, pos.y)
@@ -158,7 +151,7 @@ def action(positions: Dict[str, Position]):
     control.click(pos.x, pos.y)
     time.sleep(2)
     for i in range(3):
-        time.sleep(0.2)
+        time.sleep(0.1)
         press("f", duration=0.1)
 
 
